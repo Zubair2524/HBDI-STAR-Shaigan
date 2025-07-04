@@ -626,6 +626,9 @@
         praiseText += '<span style="color: #000;">Your versatility across multiple styles makes you an exceptional all-rounder!</span><br>';
       }
       document.getElementById('praiseText').innerHTML = praiseText;
+
+      // Send data to Firestore
+      sendToFirestore(userInfo, selectedWords, quadrantScores, percentages, dominantStyles);
     }
 
     function downloadScorecard() {
@@ -639,6 +642,52 @@
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(`${userInfo.name}_HBDI_Scorecard.pdf`);
       });
+    }
+
+    // Function to send data to Firestore
+    async function sendToFirestore(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
+      const { initializeApp } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js');
+      const { getFirestore, doc, setDoc } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
+
+      // Initialize Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyDsLniM6VGqobILzm2Jt9LIn8necnQBzNg",
+        authDomain: "hbdi-star-shaigan.firebaseapp.com",
+        projectId: "hbdi-star-shaigan",
+        storageBucket: "hbdi-star-shaigan.firebasestorage.app",
+        messagingSenderId: "945984031861",
+        appId: "1:945984031861:web:e3d851c1a38ad4c0333c3c",
+        measurementId: "G-QTVYWLMJ1Y"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Prepare data to send
+      const timestamp = new Date().toISOString();
+      const data = {
+        userInfo: {
+          name: userInfo.name,
+          designation: userInfo.designation,
+          team: userInfo.team,
+          city: userInfo.city
+        },
+        selectedWords: selectedWords,
+        quadrantScores: quadrantScores,
+        percentages: percentages,
+        dominantStyles: dominantStyles,
+        timestamp: timestamp
+      };
+
+      // Generate a unique document ID (e.g., using timestamp and name)
+      const docId = `${userInfo.name}_${Date.now()}`;
+
+      try {
+        await setDoc(doc(db, "hbdiResults", docId), data);
+        console.log("Data successfully written to Firestore!");
+      } catch (error) {
+        console.error("Error writing to Firestore: ", error);
+      }
     }
   </script>
 </body>
