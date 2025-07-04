@@ -77,6 +77,13 @@
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
+    .scenario-question {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      padding: 10px;
+      border-radius: 10px;
+    }
     .scorecard {
       width: 350px;
       height: 350px;
@@ -241,6 +248,7 @@
       <h2>Choose 25 Words for Your HBDI Personality Test</h2>
       <p class="description">Select words that reflect your personality and thinking style. You'll need to choose exactly 25 words.</p>
       <div class="word-box" id="wordBox"></div>
+      <div id="scenarioQuestion" class="scenario-question"></div>
       <button onclick="selectWord(true)">Yes, That's Me!</button>
       <button onclick="selectWord(false)">Not Quite</button>
       <div class="progress-bar">
@@ -340,10 +348,153 @@
       'Resourceful': 'D', 'Exploratory': 'D', 'Future-oriented': 'D', 'Big-picture': 'D', 'Inspiring': 'D', 'Energetic': 'D', 'Playful': 'D', 'Improvizational': 'D'
     };
 
+    const scenarios = {
+      // Analytical (A - Blue)
+      'Analytical': '<strong>Would you enjoy breaking down a complex problem into smaller parts to find a logical solution?</strong>',
+      'Logical': '<strong>Would you prefer to make decisions based on a step-by-step, rational process?</strong>',
+      'Critical': '<strong>Would you feel comfortable questioning assumptions to ensure accuracy in a project?</strong>',
+      'Objective': '<strong>Would you focus on facts and data rather than emotions when analyzing a situation?</strong>',
+      'Scientific': '<strong>Would you enjoy conducting experiments to test a hypothesis?</strong>',
+      'Rational': '<strong>Would you rely on reason over intuition to solve a challenging task?</strong>',
+      'Insightful': '<strong>Would you like to uncover hidden patterns in a set of numbers or data?</strong>',
+      'Precise': '<strong>Would you take extra care to ensure every detail in a report is exact?</strong>',
+      'Evaluative': '<strong>Would you enjoy assessing the pros and cons of a business strategy?</strong>',
+      'Factual': '<strong>Would you base your arguments on verifiable evidence rather than opinions?</strong>',
+      'Quantitative': '<strong>Would you feel confident working with statistics to draw conclusions?</strong>',
+      'Methodical': '<strong>Would you follow a structured approach to complete a research task?</strong>',
+      'Discerning': '<strong>Would you carefully judge the quality of different options before deciding?</strong>',
+      'Systematic': '<strong>Would you organize your work in a clear, step-by-step manner?</strong>',
+      'Reasoned': '<strong>Would you use logical arguments to persuade others in a discussion?</strong>',
+      'Diagnostic': '<strong>Would you enjoy identifying the cause of a technical issue?</strong>',
+      'Inquisitive': '<strong>Would you ask deep questions to understand how something works?</strong>',
+      'Calculating': '<strong>Would you carefully calculate risks before making a financial decision?</strong>',
+      'Intellectual': '<strong>Would you enjoy engaging in a debate about complex ideas?</strong>',
+      'Observant': '<strong>Would you notice small details others might overlook in a meeting?</strong>',
+      'Perceptive': '<strong>Would you pick up on subtle trends in data over time?</strong>',
+      'Investigative': '<strong>Would you enjoy digging into research to solve a mystery?</strong>',
+      'Data-driven': '<strong>Would you rely on data analysis to guide your business decisions?</strong>',
+      'Cautious': '<strong>Would you double-check your work to avoid errors?</strong>',
+      'Reflective': '<strong>Would you take time to think deeply before responding to a problem?</strong>',
+      'Prudent': '<strong>Would you make careful choices to avoid unnecessary risks?</strong>',
+      'Skeptical': '<strong>Would you question new ideas until you have solid proof?</strong>',
+      'Detail-oriented': '<strong>Would you focus on perfecting the small details of a project?</strong>',
+      'Structured': '<strong>Would you prefer a well-organized plan for every task?</strong>',
+      'Accurate': '<strong>Would you ensure all your calculations are correct before presenting?</strong>',
+      'Informed': '<strong>Would you gather all relevant facts before making a judgment?</strong>',
+      'Disciplined': '<strong>Would you stick to a strict schedule to meet deadlines?</strong>',
+      'Meticulous': '<strong>Would you carefully review every aspect of a document?</strong>',
+      'Astute': '<strong>Would you quickly spot a flaw in a logical argument?</strong>',
+      'Judicious': '<strong>Would you make wise decisions after thorough analysis?</strong>',
+      'Empirical': '<strong>Would you trust evidence from experiments over guesses?</strong>',
+      'Probing': '<strong>Would you ask detailed questions to get to the root of an issue?</strong>',
+      'Decisive': '<strong>Would you make a clear choice after evaluating all options?</strong>',
+      'Clear-headed': '<strong>Would you stay calm and focused during a crisis?</strong>',
+      'Focused': '<strong>Would you concentrate deeply on solving a single problem?</strong>',
+      'Critical-thinking': '<strong>Would you analyze a situation from multiple angles before deciding?</strong>',
+
+      // Structural/Planner (B - Green)
+      'Organized': '<strong>Would you create a detailed plan before starting a big project?</strong>',
+      'Detailed': '<strong>Would you include every step in a schedule for an event?</strong>',
+      'Practical': '<strong>Would you choose the most efficient way to complete a task?</strong>',
+      'Planner': '<strong>Would you enjoy mapping out a timeline for a team goal?</strong>',
+      'Strategic': '<strong>Would you develop a long-term plan for company growth?</strong>',
+      'Stable': '<strong>Would you prefer a consistent routine in your workday?</strong>',
+      'Methodical': '<strong>Would you follow a step-by-step process to organize a meeting?</strong>',
+      'Disciplined': '<strong>Would you stick to a strict budget for a project?</strong>',
+      'Structured': '<strong>Would you set up a clear framework for a new system?</strong>',
+      'Systematic': '<strong>Would you use a checklist to ensure all tasks are done?</strong>',
+      'Orderly': '<strong>Would you keep your workspace neat and organized?</strong>',
+      'Efficient': '<strong>Would you streamline a process to save time?</strong>',
+      'Reliable': '<strong>Would you always meet deadlines you commit to?</strong>',
+      'Consistent': '<strong>Would you maintain the same high standard every day?</strong>',
+      'Procedural': '<strong>Would you follow a set procedure for handling complaints?</strong>',
+      'Scheduled': '<strong>Would you plan your week with a detailed calendar?</strong>',
+      'Punctual': '<strong>Would you always arrive on time for appointments?</strong>',
+      'Prepared': '<strong>Would you have a backup plan ready for any situation?</strong>',
+      'Responsible': '<strong>Would you take ownership of a team project’s success?</strong>',
+      'Dependable': '<strong>Would others count on you to deliver on promises?</strong>',
+      'Thorough': '<strong>Would you review every detail before submitting a report?</strong>',
+      'Sequential': '<strong>Would you complete tasks in a specific order every time?</strong>',
+      'Coordinated': '<strong>Would you organize a team effort with clear roles?</strong>',
+      'Pragmatic': '<strong>Would you focus on realistic solutions over ideal ones?</strong>',
+      'Task-oriented': '<strong>Would you prioritize completing tasks over socializing?</strong>',
+      'Controlled': '<strong>Would you manage a project with strict oversight?</strong>',
+      'Regimented': '<strong>Would you follow a strict daily routine without deviation?</strong>',
+      'Predictable': '<strong>Would you prefer a work environment with set expectations?</strong>',
+      'Deliberate': '<strong>Would you take time to plan each step of a task?</strong>',
+      'Detail-focused': '<strong>Would you ensure no minor detail is overlooked in planning?</strong>',
+
+      // Relational (C - Red)
+      'Empathetic': '<strong>Would you feel others’ emotions and offer support during a tough time?</strong>',
+      'Compassionate': '<strong>Would you help a struggling colleague with kindness?</strong>',
+      'Supportive': '<strong>Would you encourage a friend to pursue their goals?</strong>',
+      'Collaborative': '<strong>Would you work closely with a team to solve a problem?</strong>',
+      'Expressive': '<strong>Would you share your feelings openly in a conversation?</strong>',
+      'Listener': '<strong>Would you patiently hear someone out before responding?</strong>',
+      'Mediator': '<strong>Would you help resolve a conflict between two people?</strong>',
+      'Nurturing': '<strong>Would you guide a new team member with care?</strong>',
+      'Harmonious': '<strong>Would you strive to keep peace in a group setting?</strong>',
+      'Caring': '<strong>Would you check in on a friend who seems upset?</strong>',
+      'Warm': '<strong>Would you greet others with a friendly smile every day?</strong>',
+      'Sensitive': '<strong>Would you notice when someone is feeling down?</strong>',
+      'Intuitive': '<strong>Would you sense someone’s needs without them saying it?</strong>',
+      'Sociable': '<strong>Would you enjoy chatting with new people at a gathering?</strong>',
+      'Friendly': '<strong>Would you make others feel welcome in a new group?</strong>',
+      'Team-oriented': '<strong>Would you put team success above personal gain?</strong>',
+      'Empathic': '<strong>Would you understand a coworker’s challenges and offer help?</strong>',
+      'Cooperative': '<strong>Would you work together to achieve a common goal?</strong>',
+      'Considerate': '<strong>Would you think about others’ feelings before acting?</strong>',
+      'Encouraging': '<strong>Would you motivate a friend to try again after a failure?</strong>',
+      'Inclusive': '<strong>Would you ensure everyone feels part of the team?</strong>',
+      'Sympathetic': '<strong>Would you feel sorry for someone’s misfortune and help?</strong>',
+      'Affectionate': '<strong>Would you show love or care through a hug or kind words?</strong>',
+      'Understanding': '<strong>Would you accept someone’s mistakes with patience?</strong>',
+      'Approachable': '<strong>Would others feel comfortable asking you for advice?</strong>',
+      'Supportive': '<strong>Would you back a friend’s decision even if you disagree?</strong>',
+      'Kind': '<strong>Would you offer help to a stranger in need?</strong>',
+      'Compassionate': '<strong>Would you feel moved to assist someone in distress?</strong>',
+      'Relational': '<strong>Would you build strong connections with your colleagues?</strong>',
+      'Emotional': '<strong>Would you express your feelings openly in a close relationship?</strong>',
+      'Engaging': '<strong>Would you make a conversation lively and interactive?</strong>',
+      'Personable': '<strong>Would you easily connect with people on a personal level?</strong>',
+      'Thoughtful': '<strong>Would you remember a friend’s birthday with a gift?</strong>',
+      'Warm-hearted': '<strong>Would you show genuine care in every interaction?</strong>',
+
+      // Experimental (D - Yellow)
+      'Creative': '<strong>Would you design a unique solution for a common problem?</strong>',
+      'Imaginative': '<strong>Would you come up with a new story idea for a book?</strong>',
+      'Visionary': '<strong>Would you dream up a bold plan for the future of your company?</strong>',
+      'Innovative': '<strong>Would you invent a new way to use an old tool?</strong>',
+      'Risk-taking': '<strong>Would you try a new approach even if it might fail?</strong>',
+      'Adventurous': '<strong>Would you explore an unfamiliar place on a trip?</strong>',
+      'Explorer': '<strong>Would you seek out new experiences in your free time?</strong>',
+      'Inspirational': '<strong>Would you motivate others with a creative idea?</strong>',
+      'Inventive': '<strong>Would you build a prototype for a new gadget?</strong>',
+      'Dynamic': '<strong>Would you bring energy to a stagnant team project?</strong>',
+      'Original': '<strong>Would you create something no one has thought of before?</strong>',
+      'Curious': '<strong>Would you ask questions to learn about a new topic?</strong>',
+      'Spontaneous': '<strong>Would you decide to travel on a sudden whim?</strong>',
+      'Flexible': '<strong>Would you adapt quickly to an unexpected change?</strong>',
+      'Bold': '<strong>Would you take a daring step to achieve a goal?</strong>',
+      'Experimental': '<strong>Would you test a new method to improve a process?</strong>',
+      'Visionary': '<strong>Would you imagine a revolutionary future technology?</strong>',
+      'Daring': '<strong>Would you attempt a challenging task others avoid?</strong>',
+      'Unconventional': '<strong>Would you try a non-traditional approach to a problem?</strong>',
+      'Inquisitive': '<strong>Would you explore beyond the basics to learn more?</strong>',
+      'Open-minded': '<strong>Would you consider a wild idea with an open perspective?</strong>',
+      'Resourceful': '<strong>Would you find a creative way to solve a resource shortage?</strong>',
+      'Exploratory': '<strong>Would you investigate new possibilities in a project?</strong>',
+      'Future-oriented': '<strong>Would you plan for trends five years from now?</strong>',
+      'Big-picture': '<strong>Would you focus on the overall vision rather than details?</strong>',
+      'Inspiring': '<strong>Would you spark enthusiasm with a new concept?</strong>',
+      'Energetic': '<strong>Would you bring lively energy to a brainstorming session?</strong>',
+      'Playful': '<strong>Would you add fun elements to a serious task?</strong>',
+      'Improvizational': '<strong>Would you adapt on the spot during a presentation?</strong>'
+    };
+
     let userInfo = {};
     let selectedWords = [];
-    let currentWordIndex = 0;
-    let availableWords = [];
+    let availableWords = [...words]; // Start with full list
 
     function startGame() {
       userInfo = {
@@ -354,7 +505,6 @@
       };
       document.querySelector('.welcome-screen').style.display = 'none';
       document.querySelector('.game-screen').style.display = 'block';
-      availableWords = [...words];
       shuffleArray(availableWords);
       showNextWord();
     }
@@ -368,15 +518,12 @@
 
     function showNextWord() {
       if (selectedWords.length < 25 && availableWords.length > 0) {
-        if (currentWordIndex >= availableWords.length) {
-          availableWords = [...words.filter(word => !selectedWords.includes(word))];
-          shuffleArray(availableWords);
-          currentWordIndex = 0;
-        }
-        document.getElementById('wordBox').innerText = availableWords[currentWordIndex];
+        const word = availableWords.pop(); // Remove and get the last word
+        document.getElementById('wordBox').innerText = word;
+        document.getElementById('scenarioQuestion').innerHTML = scenarios[word] || '<strong>No scenario available for this word.</strong>';
         updateProgress();
       } else if (selectedWords.length < 25) {
-        alert("Not enough unique words available to select 25. Please restart and try again with different selections.");
+        alert("Not enough unique words available to select 25. Please restart and try again.");
         location.reload();
       } else {
         showResults();
@@ -390,11 +537,9 @@
 
     function selectWord(selected) {
       if (selected) {
-        selectedWords.push(availableWords[currentWordIndex]);
-        availableWords.splice(currentWordIndex, 1);
-      } else {
-        currentWordIndex++;
+        selectedWords.push(availableWords[availableWords.length - 1]); // Add the word they said Yes to
       }
+      // Word is already removed from availableWords by showNextWord
       document.getElementById('wordCount').innerText = selectedWords.length;
 
       if (selectedWords.length >= 25) {
