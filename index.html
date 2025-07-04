@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
   <title>HBDI Personality Test Adventure</title>
   <style>
     body {
@@ -226,6 +226,14 @@
       height: auto;
       margin: 0 1rem;
     }
+    .praise {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      padding: 10px;
+      border-radius: 10px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -281,6 +289,7 @@
         </div>
       </div>
       <div class="score-details" id="profileScores"></div>
+      <div class="praise" id="praiseText"></div>
       <div class="logo-container">
         <img src="shaigan_pharma_logo.png" alt="Shaigan Pharma Logo"> <!-- Replace with actual logo URL or path -->
         <img src="star_department_logo.png" alt="STAR Department Logo"> <!-- Replace with actual logo URL or path -->
@@ -598,6 +607,25 @@
         .map(([key]) => actionWords[key]);
 
       document.getElementById('dominantType').innerText = dominantStyles.join(' and ');
+
+      // Praise based on dominant styles
+      let praiseText = '';
+      if (dominantStyles.includes('Analytical (A - Blue)')) {
+        praiseText += '<span style="color: #007ACC;">Your analytical mind is a true asset! Your ability to dissect complex problems with precision and logic is remarkable.</span><br>';
+      }
+      if (dominantStyles.includes('Structural/Planner (B - Green)')) {
+        praiseText += '<span style="color: #009900;">Your organizational skills are outstanding! Your knack for creating structured plans ensures success every time.</span><br>';
+      }
+      if (dominantStyles.includes('Relational (C - Red)')) {
+        praiseText += '<span style="color: #FF3300;">Your warmth and empathy shine brightly! Your ability to connect and support others is truly inspiring.</span><br>';
+      }
+      if (dominantStyles.includes('Experimental (D - Yellow)')) {
+        praiseText += '<span style="color: #FFD700;">Your creativity knows no bounds! Your innovative spirit and bold ideas light up every challenge.</span><br>';
+      }
+      if (dominantStyles.length > 1) {
+        praiseText += '<span style="color: #000;">Your versatility across multiple styles makes you an exceptional all-rounder!</span><br>';
+      }
+      document.getElementById('praiseText').innerHTML = praiseText;
     }
 
     function downloadScorecard() {
