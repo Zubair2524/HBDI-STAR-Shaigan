@@ -299,8 +299,8 @@
       <div class="score-details" id="profileScores"></div>
       <div class="praise" id="praiseText"></div>
       <div class="logo-container">
-        <!-- Ensure shaigan_pharma_logo.png and star_department_logo.png are in the same directory as index.html -->
-        <!-- Or update the src with the correct path or URL, e.g., https://yourdomain.com/path/to/image.png -->
+        <!-- Ensure shaigan_pharma_logo.png and star_department_logo.png are in the correct directory on GitHub Pages -->
+        <!-- Or update the src with the correct URL, e.g., https://zubair2524.github.io/HBDI-STAR-Shaigan/shaigan_pharma_logo.png -->
         <img src="shaigan_pharma_logo.png" alt="Shaigan Pharma Logo">
         <img src="star_department_logo.png" alt="STAR Department Logo">
       </div>
@@ -468,7 +468,7 @@
       'Sympathetic': '<strong>Would you feel sorry for someone’s misfortune and help?</strong>',
       'Affectionate': '<strong>Would you show love or care through a hug or kind words?</strong>',
       'Understanding': '<strong>Would you accept someone’s mistakes with patience?</strong>',
-      'Approachable': '<strong>Would others feel comfortable asking you for advice?</strong>',
+      'Approachable': '<strong>Would you others feel comfortable asking you for advice?</strong>',
       'Kind': '<strong>Would you offer help to a stranger in need?</strong>',
       'Relational': '<strong>Would you build strong connections with your colleagues?</strong>',
       'Emotional': '<strong>Would you express your feelings openly in a close relationship?</strong>',
@@ -653,6 +653,7 @@
 
     // Function to send data to Google Sheets
     async function sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
+      // Update this URL with the new Web App URL if it changes after redeployment
       const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbwvoSa7b8mVu_kAOM3o-6Frpx-ygS3NmG-G0GRkff7bEz9eXLcdWS9gbAlwgrgjgh8sSQ/exec";
       const timestamp = new Date().toISOString();
       const data = {
@@ -697,8 +698,8 @@
         }
       } catch (error) {
         console.error("Error sending to Google Sheets:", error);
-        const errorMessage = error.message.includes("Failed to fetch") && window.location.protocol === "file:"
-          ? `Error: Cannot send data when running from a local file (file://). Please host the page on a web server (e.g., http://localhost) and try again. Error details: ${error.message}`
+        const errorMessage = error.message.includes("Failed to fetch")
+          ? `Error: Failed to connect to Google Sheets. Please ensure the Google Apps Script Web App is deployed with 'Anyone' access and the URL is correct. If hosted on GitHub Pages (https://zubair2524.github.io), verify the Web App allows CORS requests. Error details: ${error.message}`
           : `Error sending data to Google Sheets: ${error.message}. Please check the browser console for details.`;
         alert(errorMessage);
       }
