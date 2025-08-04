@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TLWCLPQSL1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-TLWCLPQSL1');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLWCLPQSL1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLWCLPQSL1');
+  </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Let's Understand Yourself (HBDI Personality Test)</title>
   <style>
     body {
@@ -300,8 +299,10 @@
       <div class="score-details" id="profileScores"></div>
       <div class="praise" id="praiseText"></div>
       <div class="logo-container">
-        <img src="shaigan_pharma_logo.png" alt="Shaigan Pharma Logo"> <!-- Replace with actual logo URL or path -->
-        <img src="star_department_logo.png" alt="STAR Department Logo"> <!-- Replace with actual logo URL or path -->
+        <!-- Ensure shaigan_pharma_logo.png and star_department_logo.png are in the same directory as index.html -->
+        <!-- Or update the src with the correct path or URL, e.g., https://yourdomain.com/path/to/image.png -->
+        <img src="shaigan_pharma_logo.png" alt="Shaigan Pharma Logo">
+        <img src="star_department_logo.png" alt="STAR Department Logo">
       </div>
       <h3 id="userInfo"></h3>
       <button class="download-btn" onclick="downloadScorecard()">Download Your Scorecard</button>
@@ -322,8 +323,8 @@
 
       // Structural/Planner (B - Green) - 50 words
       'Organized', 'Detailed', 'Practical', 'Planner', 'Strategic', 'Stable', 'Methodical', 'Disciplined', 'Structured', 'Systematic',
-      'Orderly', 'Efficient', 'Reliable', 'Consistent', 'Procedural', 'Scheduled', 'Punctual', 'Prepared', 'Methodical', 'Responsible',
-      'Dependable', 'Thorough', 'Sequential', 'Logical', 'Coordinated', 'Pragmatic', 'Task-oriented', 'Controlled', 'Regimented', 'Predictable',
+      'Orderly', 'Efficient', 'Reliable', 'Consistent', 'Procedural', 'Scheduled', 'Punctual', 'Prepared', 'Responsible', 'Dependable',
+      'Thorough', 'Sequential', 'Logical', 'Coordinated', 'Pragmatic', 'Task-oriented', 'Controlled', 'Regimented', 'Predictable',
       'Deliberate', 'Cautious', 'Meticulous', 'Structured', 'Organized', 'Detail-focused', 'Systematic', 'Practical', 'Planner', 'Efficient',
       'Reliable', 'Consistent', 'Methodical', 'Orderly', 'Punctual', 'Prepared', 'Responsible', 'Dependable', 'Thorough', 'Sequential',
 
@@ -468,9 +469,7 @@
       'Affectionate': '<strong>Would you show love or care through a hug or kind words?</strong>',
       'Understanding': '<strong>Would you accept someone’s mistakes with patience?</strong>',
       'Approachable': '<strong>Would others feel comfortable asking you for advice?</strong>',
-      'Supportive': '<strong>Would you back a friend’s decision even if you disagree?</strong>',
       'Kind': '<strong>Would you offer help to a stranger in need?</strong>',
-      'Compassionate': '<strong>Would you feel moved to assist someone in distress?</strong>',
       'Relational': '<strong>Would you build strong connections with your colleagues?</strong>',
       'Emotional': '<strong>Would you express your feelings openly in a close relationship?</strong>',
       'Engaging': '<strong>Would you make a conversation lively and interactive?</strong>',
@@ -495,7 +494,6 @@
       'Flexible': '<strong>Would you adapt quickly to an unexpected change?</strong>',
       'Bold': '<strong>Would you take a daring step to achieve a goal?</strong>',
       'Experimental': '<strong>Would you test a new method to improve a process?</strong>',
-      'Visionary': '<strong>Would you imagine a revolutionary future technology?</strong>',
       'Daring': '<strong>Would you attempt a challenging task others avoid?</strong>',
       'Unconventional': '<strong>Would you try a non-traditional approach to a problem?</strong>',
       'Inquisitive': '<strong>Would you explore beyond the basics to learn more?</strong>',
@@ -636,8 +634,8 @@
       }
       document.getElementById('praiseText').innerHTML = praiseText;
 
-      // Send data to Firestore
-      sendToFirestore(userInfo, selectedWords, quadrantScores, percentages, dominantStyles);
+      // Send data to Google Sheets
+      sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles);
     }
 
     function downloadScorecard() {
@@ -653,52 +651,58 @@
       });
     }
 
-    // Function to send data to Firestore
-    async function sendToFirestore(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
-      const { initializeApp } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js');
-      const { getFirestore, doc, setDoc } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
-
-      // Initialize Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyDsLniM6VGqobILzm2Jt9LIn8necnQBzNg",
-        authDomain: "hbdi-star-shaigan.firebaseapp.com",
-        projectId: "hbdi-star-shaigan",
-        storageBucket: "hbdi-star-shaigan.firebasestorage.app",
-        messagingSenderId: "945984031861",
-        appId: "1:945984031861:web:e3d851c1a38ad4c0333c3c",
-        measurementId: "G-QTVYWLMJ1Y"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-
-      // Prepare data to send
+    // Function to send data to Google Sheets
+    async function sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
+      const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbwvoSa7b8mVu_kAOM3o-6Frpx-ygS3NmG-G0GRkff7bEz9eXLcdWS9gbAlwgrgjgh8sSQ/exec";
       const timestamp = new Date().toISOString();
       const data = {
         userInfo: {
-          name: userInfo.name,
-          designation: userInfo.designation,
-          team: userInfo.team,
-          city: userInfo.city
+          name: userInfo.name || "",
+          designation: userInfo.designation || "",
+          team: userInfo.team || "",
+          city: userInfo.city || ""
         },
-        selectedWords: selectedWords,
-        quadrantScores: quadrantScores,
-        percentages: percentages,
-        dominantStyles: dominantStyles,
+        selectedWords: selectedWords || [],
+        quadrantScores: quadrantScores || { A: 0, B: 0, C: 0, D: 0 },
+        percentages: percentages || { A: 0, B: 0, C: 0, D: 0 },
+        dominantStyles: dominantStyles || [],
         timestamp: timestamp
       };
 
-      // Generate a unique document ID (e.g., using timestamp and name)
-      const docId = `${userInfo.name}_${Date.now()}`;
+      console.log("Sending data to Google Sheets:", JSON.stringify(data, null, 2));
 
       try {
-        await setDoc(doc(db, "hbdiResults", docId), data);
-        console.log("Data successfully written to Firestore!");
+        const response = await fetch(googleSheetsUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data),
+          mode: "cors",
+          credentials: "omit"
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        console.log("Google Sheets Response:", result);
+
+        if (result.status === "success") {
+          alert("Your data has been successfully saved to Google Sheets!");
+        } else {
+          console.error("Google Sheets error response:", result);
+          alert(`Error saving data to Google Sheets: ${result.message}`);
+        }
       } catch (error) {
-        console.error("Error writing to Firestore: ", error);
+        console.error("Error sending to Google Sheets:", error);
+        const errorMessage = error.message.includes("Failed to fetch") && window.location.protocol === "file:"
+          ? `Error: Cannot send data when running from a local file (file://). Please host the page on a web server (e.g., http://localhost) and try again. Error details: ${error.message}`
+          : `Error sending data to Google Sheets: ${error.message}. Please check the browser console for details.`;
+        alert(errorMessage);
       }
     }
   </script>
 </body>
 </html>
-
