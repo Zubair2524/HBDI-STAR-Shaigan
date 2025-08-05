@@ -231,7 +231,7 @@
     }
     .logo-container img {
       max-width: 150px;
-      height: auto;
+zab      height: auto;
       margin: 0 1rem;
     }
     .praise {
@@ -424,7 +424,7 @@
       'Efficient': '<strong>Would you streamline a process to save time?</strong>',
       'Reliable': '<strong>Would you always meet deadlines you commit to?</strong>',
       'Consistent': '<strong>Would you maintain the same high standard every day?</strong>',
-      'Procedural': '<strong>Would you follow a set procedure for handling complaints?</strong>',
+      'Procedural': '<strong>Would you-follow a set procedure for handling complaints?</strong>',
       'Scheduled': '<strong>Would you plan your week with a detailed calendar?</strong>',
       'Punctual': '<strong>Would you always arrive on time for appointments?</strong>',
       'Prepared': '<strong>Would you have a backup plan ready for any situation?</strong>',
@@ -648,43 +648,53 @@
         pdf.save(`${userInfo.name}_HBDI_Scorecard.pdf`);
       });
     }
-
     // Function to send data to Google Sheets
     async function sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
       const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbwvoSa7b8mVu_kAOM3o-6Frpx-ygS3NmG-G0GRkff7bEz9eXLcdWS9gbAlwgrgjgh8sSQ/exec";
       const timestamp = new Date().toISOString();
       const data = {
         userInfo: {
-          name: userInfo.name,
-          designation: userInfo.designation,
-          team: userInfo.team,
-          city: userInfo.city
+          name: userInfo.name || "",
+          designation: userInfo.designation || "",
+          team: userInfo.team || "",
+          city: userInfo.city || ""
         },
-        selectedWords: selectedWords,
-        quadrantScores: quadrantScores,
-        percentages: percentages,
-        dominantStyles: dominantStyles,
+        selectedWords: selectedWords || [],
+        quadrantScores: quadrantScores || { A: 0, B: 0, C: 0, D: 0 },
+        percentages: percentages || { A: 0, B: 0, C: 0, D: 0 },
+        dominantStyles: dominantStyles || [],
         timestamp: timestamp
       };
+
+      console.log("Sending data to Google Sheets:", JSON.stringify(data, null, 2));
 
       try {
         const response = await fetch(googleSheetsUrl, {
           method: "POST",
-          body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          body: JSON.stringify(data),
+          mode: "cors",
+          credentials: "omit"
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
+        }
+
         const result = await response.json();
         console.log("Google Sheets Response:", result);
+
         if (result.status === "success") {
           alert("Your data has been successfully saved to Google Sheets!");
         } else {
-          alert("Error saving data to Google Sheets: " + result.message);
+          console.error("Google Sheets error response:", result);
+          alert(`Error saving data to Google Sheets: ${result.message}`);
         }
       } catch (error) {
         console.error("Error sending to Google Sheets:", error);
-        alert("Error saving data to Google Sheets: " + error.message);
+        alert(`Error sending data to Google Sheets: ${error.message}. Please check theeditor: the browser console for details.`);
       }
     }
   </script>
