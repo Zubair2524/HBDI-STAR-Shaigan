@@ -324,7 +324,7 @@
       'Critical-thinking',
 
       // Structural/Planner (B - Green)
-      'Organized', 'Detailed', 'Practical', 'Planner', 'Strategic', 'Stable', 'Methodical', 'Disciplined', 'Structured', 'Systematic',
+      'Organized', 'Detailed', 'Practical', 'Planner', 'Stable', 'Disciplined', 'Structured', 'Systematic',
       'Orderly', 'Efficient', 'Reliable', 'Consistent', 'Procedural', 'Scheduled', 'Punctual', 'Prepared', 'Responsible', 'Dependable',
       'Thorough', 'Sequential', 'Coordinated', 'Pragmatic', 'Task-oriented', 'Controlled', 'Regimented', 'Predictable', 'Deliberate', 'Detail-focused',
 
@@ -336,7 +336,7 @@
 
       // Experimental (D - Yellow)
       'Creative', 'Imaginative', 'Visionary', 'Innovative', 'Risk-taking', 'Adventurous', 'Explorer', 'Inspirational', 'Inventive', 'Dynamic',
-      'Original', 'Curious', 'Spontaneous', 'Flexible', 'Bold', 'Experimental', 'Daring', 'Unconventional', 'Inquisitive', 'Open-minded',
+      'Original', 'Curious', 'Spontaneous', 'Flexible', 'Bold', 'Experimental', 'Daring', 'Unconventional', 'Open-minded',
       'Resourceful', 'Exploratory', 'Future-oriented', 'Big-picture', 'Inspiring', 'Energetic', 'Playful', 'Improvizational'
     ];
 
@@ -348,7 +348,7 @@
       'Probing': 'A', 'Decisive': 'A', 'Clear-headed': 'A', 'Focused': 'A', 'Critical-thinking': 'A',
 
       // Structural/Planner (B - Green)
-      'Organized': 'B', 'Detailed': 'B', 'Practical': 'B', 'Planner': 'B', 'Strategic': 'B', 'Stable': 'B', 'Methodical': 'B', 'Disciplined': 'B', 'Structured': 'B', 'Systematic': 'B',
+      'Organized': 'B', 'Detailed': 'B', 'Practical': 'B', 'Planner': 'B', 'Stable': 'B', 'Disciplined': 'B', 'Structured': 'B', 'Systematic': 'B',
       'Orderly': 'B', 'Efficient': 'B', 'Reliable': 'B', 'Consistent': 'B', 'Procedural': 'B', 'Scheduled': 'B', 'Punctual': 'B', 'Prepared': 'B', 'Responsible': 'B', 'Dependable': 'B',
       'Thorough': 'B', 'Sequential': 'B', 'Coordinated': 'B', 'Pragmatic': 'B', 'Task-oriented': 'B', 'Controlled': 'B', 'Regimented': 'B', 'Predictable': 'B', 'Deliberate': 'B', 'Detail-focused': 'B',
 
@@ -360,7 +360,7 @@
 
       // Experimental (D - Yellow)
       'Creative': 'D', 'Imaginative': 'D', 'Visionary': 'D', 'Innovative': 'D', 'Risk-taking': 'D', 'Adventurous': 'D', 'Explorer': 'D', 'Inspirational': 'D', 'Inventive': 'D', 'Dynamic': 'D',
-      'Original': 'D', 'Curious': 'D', 'Spontaneous': 'D', 'Flexible': 'D', 'Bold': 'D', 'Experimental': 'D', 'Daring': 'D', 'Unconventional': 'D', 'Inquisitive': 'D', 'Open-minded': 'D',
+      'Original': 'D', 'Curious': 'D', 'Spontaneous': 'D', 'Flexible': 'D', 'Bold': 'D', 'Experimental': 'D', 'Daring': 'D', 'Unconventional': 'D', 'Open-minded': 'D',
       'Resourceful': 'D', 'Exploratory': 'D', 'Future-oriented': 'D', 'Big-picture': 'D', 'Inspiring': 'D', 'Energetic': 'D', 'Playful': 'D', 'Improvizational': 'D'
     };
 
@@ -413,9 +413,7 @@
       'Detailed': '<strong>Would you include every step in a schedule for an event?</strong>',
       'Practical': '<strong>Would you choose the most efficient way to complete a task?</strong>',
       'Planner': '<strong>Would you enjoy mapping out a timeline for a team goal?</strong>',
-      'Strategic': '<strong>Would you develop a long-term plan for company growth?</strong>',
       'Stable': '<strong>Would you prefer a consistent routine in your workday?</strong>',
-      'Methodical': '<strong>Would you follow a step-by-step process to organize a meeting?</strong>',
       'Disciplined': '<strong>Would you stick to a strict budget for a project?</strong>',
       'Structured': '<strong>Would you set up a clear framework for a new system?</strong>',
       'Systematic': '<strong>Would you use a checklist to ensure all tasks are done?</strong>',
@@ -465,7 +463,7 @@
       'Sympathetic': '<strong>Would you feel sorry for someone’s misfortune and help?</strong>',
       'Affectionate': '<strong>Would you show love or care through a hug or kind words?</strong>',
       'Understanding': '<strong>Would you accept someone’s mistakes with patience?</strong>',
-      'Approachable': '<strong>Would others feel comfortable asking you for advice?</strong>',
+      'Approachable': '<strong>Would you others feel comfortable asking you for advice?</strong>',
       'Kind': '<strong>Would you offer help to a stranger in need?</strong>',
       'Relational': '<strong>Would you build strong connections with your colleagues?</strong>',
       'Emotional': '<strong>Would you express your feelings openly in a close relationship?</strong>',
@@ -493,7 +491,6 @@
       'Experimental': '<strong>Would you test a new method to improve a process?</strong>',
       'Daring': '<strong>Would you attempt a challenging task others avoid?</strong>',
       'Unconventional': '<strong>Would you try a non-traditional approach to a problem?</strong>',
-      'Inquisitive': '<strong>Would you explore beyond the basics to learn more?</strong>',
       'Open-minded': '<strong>Would you consider a wild idea with an open perspective?</strong>',
       'Resourceful': '<strong>Would you find a creative way to solve a resource shortage?</strong>',
       'Exploratory': '<strong>Would you investigate new possibilities in a project?</strong>',
@@ -519,14 +516,14 @@
         city: document.getElementById('city').value || 'Mind City'
       };
       if (availableWords.length < 25) {
-        console.error("Not enough unique words available. Required: 25, Available: ", availableWords.length);
+        console.error("Not enough unique words available. Required: 25, Available:", availableWords.length);
         alert("Error: Not enough unique words to complete the test. Please contact the administrator.");
         return;
       }
       document.querySelector('.welcome-screen').style.display = 'none';
       document.querySelector('.game-screen').style.display = 'block';
       shuffleArray(availableWords);
-      console.log("Available words after shuffle:", availableWords);
+      console.log("Available words after shuffle:", availableWords, "Count:", availableWords.length);
       showNextWord();
     }
 
@@ -555,8 +552,14 @@
       }
 
       isProcessing = true;
-      document.getElementById('yesButton').disabled = true;
-      document.getElementById('noButton').disabled = true;
+      const yesButton = document.getElementById('yesButton');
+      const noButton = document.getElementById('noButton');
+      if (yesButton && noButton) {
+        yesButton.disabled = true;
+        noButton.disabled = true;
+      } else {
+        console.error("Button elements not found");
+      }
 
       currentWord = availableWords.pop();
       console.log("Displaying word:", currentWord, "Remaining words:", availableWords.length);
@@ -564,7 +567,7 @@
       const wordBox = document.getElementById('wordBox');
       const scenarioQuestion = document.getElementById('scenarioQuestion');
       if (wordBox && scenarioQuestion) {
-        wordBox.innerText = currentWord;
+        wordBox.innerText = currentWord || "No word available";
         scenarioQuestion.innerHTML = scenarios[currentWord] || '<strong>No scenario available for this word.</strong>';
         document.getElementById('wordCount').innerText = selectedWords.length;
         updateProgress();
@@ -573,8 +576,10 @@
       }
 
       isProcessing = false;
-      document.getElementById('yesButton').disabled = false;
-      document.getElementById('noButton').disabled = false;
+      if (yesButton && noButton) {
+        yesButton.disabled = false;
+        noButton.disabled = false;
+      }
     }
 
     function updateProgress() {
@@ -593,8 +598,14 @@
         return;
       }
       isProcessing = true;
-      document.getElementById('yesButton').disabled = true;
-      document.getElementById('noButton').disabled = true;
+      const yesButton = document.getElementById('yesButton');
+      const noButton = document.getElementById('noButton');
+      if (yesButton && noButton) {
+        yesButton.disabled = true;
+        noButton.disabled = true;
+      } else {
+        console.error("Button elements not found");
+      }
 
       if (selected && currentWord && wordQuadrants[currentWord]) {
         if (!selectedWords.includes(currentWord)) {
@@ -613,8 +624,10 @@
       updateProgress();
 
       isProcessing = false;
-      document.getElementById('yesButton').disabled = false;
-      document.getElementById('noButton').disabled = false;
+      if (yesButton && noButton) {
+        yesButton.disabled = false;
+        noButton.disabled = false;
+      }
 
       showNextWord();
     }
@@ -766,11 +779,11 @@
           alert("Your data has been successfully saved to Google Sheets!");
         } else {
           console.error("Google Sheets error response:", result);
-          alert(`Error saving data to Google Sheets: ${result.message}`);
+          alert(`Error saving data to Google Sheets: ${result.message || "Unknown error"}`);
         }
       } catch (error) {
         console.error("Error sending to Google Sheets:", error);
-        alert(`Error sending data to Google Sheets: ${error.message}. Please check the browser console for details or contact the administrator.`);
+        alert(`Error sending data to Google Sheets: ${error.message}. Your results are still available, and you can download your scorecard.`);
       }
     }
   </script>
