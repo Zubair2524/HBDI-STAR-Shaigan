@@ -231,7 +231,7 @@
     }
     .logo-container img {
       max-width: 150px;
-zab      height: auto;
+      height: auto;
       margin: 0 1rem;
     }
     .praise {
@@ -424,7 +424,7 @@ zab      height: auto;
       'Efficient': '<strong>Would you streamline a process to save time?</strong>',
       'Reliable': '<strong>Would you always meet deadlines you commit to?</strong>',
       'Consistent': '<strong>Would you maintain the same high standard every day?</strong>',
-      'Procedural': '<strong>Would you-follow a set procedure for handling complaints?</strong>',
+      'Procedural': '<strong>Would you follow a set procedure for handling complaints?</strong>',
       'Scheduled': '<strong>Would you plan your week with a detailed calendar?</strong>',
       'Punctual': '<strong>Would you always arrive on time for appointments?</strong>',
       'Prepared': '<strong>Would you have a backup plan ready for any situation?</strong>',
@@ -551,7 +551,12 @@ zab      height: auto;
 
     function selectWord(selected) {
       if (selected) {
-        selectedWords.push(availableWords[availableWords.length - 1]); // Add the word they said Yes to
+        const currentWord = document.getElementById('wordBox').innerText;
+        if (currentWord && wordQuadrants[currentWord]) {
+          selectedWords.push(currentWord); // Add the word they said Yes to
+        } else {
+          console.warn(`Word "${currentWord}" not found in wordQuadrants, skipping.`);
+        }
       }
       // Word is already removed from availableWords by showNextWord
       document.getElementById('wordCount').innerText = selectedWords.length;
@@ -570,7 +575,11 @@ zab      height: auto;
       const quadrantScores = { A: 0, B: 0, C: 0, D: 0 };
       selectedWords.forEach(word => {
         const quadrant = wordQuadrants[word];
-        quadrantScores[quadrant] += 4; // Each word contributes 4 marks
+        if (quadrant) { // Only increment if quadrant is defined
+          quadrantScores[quadrant] += 4; // Each word contributes 4 marks
+        } else {
+          console.warn(`No quadrant defined for word: ${word}`);
+        }
       });
 
       const totalScore = 100; // Total marks = 25 words * 4 = 100, normalized to 100%
@@ -586,7 +595,8 @@ zab      height: auto;
       const sum = percentages.A + percentages.B + percentages.C + percentages.D;
       if (sum !== 100) {
         const diff = 100 - sum;
-        percentages.A += diff; // Adjust the highest quadrant to compensate
+        const maxKey = Object.keys(percentages).reduce((a, b) => percentages[a] > percentages[b] ? a : b);
+        percentages[maxKey] += diff; // Adjust the highest quadrant to compensate
       }
 
       document.getElementById('profileScores').innerHTML =
@@ -651,7 +661,7 @@ zab      height: auto;
 
     // Function to send data to Google Sheets
     async function sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
-      const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbxGiYWePef5Z0wjxMvRGwAXvj67mmkBdNuqgE_AtfbFtMA-tflo7rIcecuSoagSXSCPeA/exec";
+      const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbyLehs5Y2VnjJ3lyJhrkBcyCL_Hbo1GeFePEQ8ufYK9AHWeOhLep1VGJZ8HP4oXe2yNmw/exec";
       const timestamp = new Date().toISOString();
       const data = {
         userInfo: {
@@ -661,21 +671,36 @@ zab      height: auto;
           city: userInfo.city || ""
         },
         selectedWords: selectedWords || [],
-        quadrantScores: quadrantScores || { A: 0, B: 0, C: 0, D: 0 },
+        quadrantScores: {
+          A: quadrantScores.A || 0,
+          B: quadrantScores.B || 0,
+          C: quadrantScores.C || 0,
+          D: quadrantScores.D || 0
+        },
         percentages: percentages || { A: 0, B: 0, C: 0, D: 0 },
         dominantStyles: dominantStyles || [],
         timestamp: timestamp
       };
 
+      // Convert data to form-urlencoded format
+      const formData = new URLSearchParams();
+      formData.append('userInfo', JSON.stringify(data.userInfo));
+      formData.append('selectedWords', JSON.stringify(data.selectedWords));
+      formData.append('quadrantScores', JSON.stringify(data.quadrantScores));
+      formData.append('percentages', JSON.stringify(data.percentages));
+      formData.append('dominantStyles', JSON.stringify(data.dominantStyles));
+      formData.append('timestamp', data.timestamp);
+
       console.log("Sending data to Google Sheets:", JSON.stringify(data, null, 2));
+      console.log("Form-encoded data:", formData.toString());
 
       try {
         const response = await fetch(googleSheetsUrl, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/x-www-form-urlencoded"
           },
-          body: JSON.stringify(data),
+          body: formData.toString(),
           mode: "cors",
           credentials: "omit"
         });
@@ -695,10 +720,9 @@ zab      height: auto;
         }
       } catch (error) {
         console.error("Error sending to Google Sheets:", error);
-        alert(`Error sending data to Google Sheets: ${error.message}. Please check theeditor: the browser console for details.`);
+        alert(`Error sending data to Google Sheets: ${error.message}. Please check the browser console for details or contact the administrator.`);
       }
     }
   </script>
 </body>
 </html>
-
