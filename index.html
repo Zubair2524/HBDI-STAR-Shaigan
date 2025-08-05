@@ -727,63 +727,45 @@
     async function sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
       const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbxGiYWePef5Z0wjxMvRGwAXvj67mmkBdNuqgE_AtfbFtMA-tflo7rIcecuSoagSXSCPeA/exec";
       const timestamp = new Date().toISOString();
-      const data = {
-        userInfo: {
-          name: userInfo.name || "",
-          designation: userInfo.designation || "",
-          team: userInfo.team || "",
-          city: userInfo.city || ""
-        },
-        selectedWords: selectedWords || [],
-        quadrantScores: {
-          A: quadrantScores.A || 0,
-          B: quadrantScores.B || 0,
-          C: quadrantScores.C || 0,
-          D: quadrantScores.D || 0
-        },
-        percentages: percentages || { A: 0, B: 0, C: 0, D: 0 },
-        dominantStyles: dominantStyles || [],
-        timestamp: timestamp
-      };
 
-      // Convert data to form-urlencoded format
-      const formData = new URLSearchParams();
-      formData.append('userInfo', JSON.stringify(data.userInfo));
-      formData.append('selectedWords', JSON.stringify(data.selectedWords));
-      formData.append('quadrantScores', JSON.stringify(data.quadrantScores));
-      formData.append('percentages', JSON.stringify(data.percentages));
-      formData.append('dominantStyles', JSON.stringify(data.dominantStyles));
-      formData.append('timestamp', data.timestamp);
+      // Prepare FormData
+      const formData = new FormData();
+      formData.append('Name', userInfo.name || '');
+      formData.append('Designation', userInfo.designation || '');
+      formData.append('Team', userInfo.team || '');
+      formData.append('City', userInfo.city || '');
+      formData.append('SelectedWords', JSON.stringify(selectedWords || []));
+      formData.append('QuadrantA', quadrantScores.A || 0);
+      formData.append('QuadrantB', quadrantScores.B || 0);
+      formData.append('QuadrantC', quadrantScores.C || 0);
+      formData.append('QuadrantD', quadrantScores.D || 0);
+      formData.append('PercentageA', percentages.A || 0);
+      formData.append('PercentageB', percentages.B || 0);
+      formData.append('PercentageC', percentages.C || 0);
+      formData.append('PercentageD', percentages.D || 0);
+      formData.append('DominantStyles', JSON.stringify(dominantStyles || []));
+      formData.append('Timestamp', timestamp);
 
-      console.log("Sending data to Google Sheets:", JSON.stringify(data, null, 2));
-      console.log("Form-encoded data:", formData.toString());
+      console.log('Sending data to Google Sheets:', Object.fromEntries(formData));
 
       try {
         const response = await fetch(googleSheetsUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: formData.toString(),
-          mode: "cors",
-          credentials: "omit"
+          method: 'POST',
+          body: formData
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`);
-        }
+        const data = await response.json();
+        console.log('Google Sheets Response:', data);
 
-        const result = await response.json();
-        console.log("Google Sheets Response:", JSON.stringify(result, null, 2));
-
-        if (result.status === "success") {
-          alert("Your data has been successfully saved to Google Sheets!");
+        if (data.result === 'success') {
+          console.log('Data submitted successfully:', data);
+          alert('Your HBDI results have been successfully saved to Google Sheets!');
         } else {
-          console.error("Google Sheets error response:", result);
-          alert(`Error saving data to Google Sheets: ${result.message || "Unknown error"}. Your results are still available, and you can download your scorecard.`);
+          console.error('Error submitting data:', data.error);
+          alert(`Error saving data to Google Sheets: ${data.error || 'Unknown error'}. Your results are still available, and you can download your scorecard.`);
         }
       } catch (error) {
-        console.error("Error sending to Google Sheets:", error);
+        console.error('Error sending to Google Sheets:', error);
         alert(`Error sending data to Google Sheets: ${error.message}. Your results are still available, and you can download your scorecard.`);
       }
     }
