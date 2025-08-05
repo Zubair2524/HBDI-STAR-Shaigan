@@ -518,9 +518,15 @@
         team: document.getElementById('team').value || 'Dream Team',
         city: document.getElementById('city').value || 'Mind City'
       };
+      if (availableWords.length < 25) {
+        console.error("Not enough unique words available. Required: 25, Available: ", availableWords.length);
+        alert("Error: Not enough unique words to complete the test. Please contact the administrator.");
+        return;
+      }
       document.querySelector('.welcome-screen').style.display = 'none';
       document.querySelector('.game-screen').style.display = 'block';
       shuffleArray(availableWords);
+      console.log("Available words after shuffle:", availableWords);
       showNextWord();
     }
 
@@ -532,28 +538,60 @@
     }
 
     function showNextWord() {
-      if (isProcessing) return; // Prevent multiple calls
-      if (selectedWords.length < 25 && availableWords.length > 0) {
-        currentWord = availableWords.pop(); // Remove and get the next word
-        document.getElementById('wordBox').innerText = currentWord;
-        document.getElementById('scenarioQuestion').innerHTML = scenarios[currentWord] || '<strong>No scenario available for this word.</strong>';
+      if (isProcessing) {
+        console.log("showNextWord blocked: isProcessing is true");
+        return;
+      }
+      if (selectedWords.length >= 25) {
+        console.log("Reached 25 words, showing results");
+        showResults();
+        return;
+      }
+      if (availableWords.length === 0) {
+        console.error("No more available words. Selected:", selectedWords.length);
+        alert("Error: Ran out of words before selecting 25. Please restart and try again.");
+        location.reload();
+        return;
+      }
+
+      isProcessing = true;
+      document.getElementById('yesButton').disabled = true;
+      document.getElementById('noButton').disabled = true;
+
+      currentWord = availableWords.pop();
+      console.log("Displaying word:", currentWord, "Remaining words:", availableWords.length);
+
+      const wordBox = document.getElementById('wordBox');
+      const scenarioQuestion = document.getElementById('scenarioQuestion');
+      if (wordBox && scenarioQuestion) {
+        wordBox.innerText = currentWord;
+        scenarioQuestion.innerHTML = scenarios[currentWord] || '<strong>No scenario available for this word.</strong>';
         document.getElementById('wordCount').innerText = selectedWords.length;
         updateProgress();
-      } else if (selectedWords.length < 25) {
-        alert("Not enough unique words available to select 25. Please restart and try again.");
-        location.reload();
       } else {
-        showResults();
+        console.error("DOM elements not found: wordBox or scenarioQuestion");
       }
+
+      isProcessing = false;
+      document.getElementById('yesButton').disabled = false;
+      document.getElementById('noButton').disabled = false;
     }
 
     function updateProgress() {
       const progress = (selectedWords.length / 25) * 100;
-      document.getElementById('progressFill').style.width = `${progress}%`;
+      const progressFill = document.getElementById('progressFill');
+      if (progressFill) {
+        progressFill.style.width = `${progress}%`;
+      } else {
+        console.error("Progress fill element not found");
+      }
     }
 
     function selectWord(selected) {
-      if (isProcessing) return; // Prevent multiple clicks
+      if (isProcessing) {
+        console.log("selectWord blocked: isProcessing is true");
+        return;
+      }
       isProcessing = true;
       document.getElementById('yesButton').disabled = true;
       document.getElementById('noButton').disabled = true;
@@ -561,26 +599,24 @@
       if (selected && currentWord && wordQuadrants[currentWord]) {
         if (!selectedWords.includes(currentWord)) {
           selectedWords.push(currentWord);
-          console.log(`Selected word: ${currentWord}, Total selected: ${selectedWords.length}`);
+          console.log(`Selected word: ${currentWord}, Total selected: ${selectedWords.length}, Selected words:`, selectedWords);
         } else {
           console.warn(`Word "${currentWord}" already selected, skipping.`);
         }
       } else if (selected && currentWord) {
         console.warn(`Word "${currentWord}" not found in wordQuadrants, skipping.`);
+      } else if (selected) {
+        console.error("No current word to select");
       }
 
       document.getElementById('wordCount').innerText = selectedWords.length;
+      updateProgress();
 
-      setTimeout(() => {
-        if (selectedWords.length >= 25) {
-          showResults();
-        } else {
-          showNextWord();
-        }
-        isProcessing = false;
-        document.getElementById('yesButton').disabled = false;
-        document.getElementById('noButton').disabled = false;
-      }, 300); // Short delay to prevent rapid clicks
+      isProcessing = false;
+      document.getElementById('yesButton').disabled = false;
+      document.getElementById('noButton').disabled = false;
+
+      showNextWord();
     }
 
     function showResults() {
