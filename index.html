@@ -322,18 +322,15 @@
       'Perceptive', 'Investigative', 'Data-driven', 'Cautious', 'Reflective', 'Prudent', 'Skeptical', 'Detail-oriented', 'Structured', 'Accurate',
       'Informed', 'Disciplined', 'Meticulous', 'Astute', 'Judicious', 'Empirical', 'Probing', 'Strategic', 'Decisive', 'Clear-headed', 'Focused',
       'Critical-thinking',
-
       // Structural/Planner (B - Green)
       'Organized', 'Detailed', 'Practical', 'Planner', 'Stable', 'Disciplined', 'Structured', 'Systematic',
       'Orderly', 'Efficient', 'Reliable', 'Consistent', 'Procedural', 'Scheduled', 'Punctual', 'Prepared', 'Responsible', 'Dependable',
       'Thorough', 'Sequential', 'Coordinated', 'Pragmatic', 'Task-oriented', 'Controlled', 'Regimented', 'Predictable', 'Deliberate', 'Detail-focused',
-
       // Relational (C - Red)
       'Empathetic', 'Compassionate', 'Supportive', 'Collaborative', 'Expressive', 'Listener', 'Mediator', 'Nurturing', 'Harmonious', 'Caring',
       'Warm', 'Sensitive', 'Intuitive', 'Sociable', 'Friendly', 'Team-oriented', 'Empathic', 'Cooperative', 'Considerate', 'Encouraging',
       'Inclusive', 'Sympathetic', 'Affectionate', 'Understanding', 'Approachable', 'Kind', 'Relational', 'Emotional', 'Engaging', 'Personable',
       'Thoughtful', 'Warm-hearted',
-
       // Experimental (D - Yellow)
       'Creative', 'Imaginative', 'Visionary', 'Innovative', 'Risk-taking', 'Adventurous', 'Explorer', 'Inspirational', 'Inventive', 'Dynamic',
       'Original', 'Curious', 'Spontaneous', 'Flexible', 'Bold', 'Experimental', 'Daring', 'Unconventional', 'Open-minded',
@@ -343,21 +340,19 @@
     const wordQuadrants = {
       // Analytical (A - Blue)
       'Analytical': 'A', 'Logical': 'A', 'Critical': 'A', 'Objective': 'A', 'Scientific': 'A', 'Rational': 'A', 'Insightful': 'A', 'Precise': 'A', 'Evaluative': 'A', 'Factual': 'A',
-      'Quantitative': 'A', 'Discerning': 'A', 'Reasoned': 'A', 'Diagnostic': 'A', 'Inquisitive': 'A', 'Calculating': 'A', 'Intellectual': 'A', 'Observant': 'A', 'Perceptive': 'A', 'Investigative': 'A',
-      'Data-driven': 'A', 'Cautious': 'A', 'Reflective': 'A', 'Prudent': 'A', 'Skeptical': 'A', 'Detail-oriented': 'A', 'Accurate': 'A', 'Informed': 'A', 'Judicious': 'A', 'Empirical': 'A',
-      'Probing': 'A', 'Strategic': 'A', 'Decisive': 'A', 'Clear-headed': 'A', 'Focused': 'A', 'Critical-thinking': 'A', 'Meticulous': 'A',
-
+      'Quantitative': 'A', 'Methodical': 'A', 'Discerning': 'A', 'Systematic': 'A', 'Reasoned': 'A', 'Diagnostic': 'A', 'Inquisitive': 'A', 'Calculating': 'A', 'Intellectual': 'A', 'Observant': 'A',
+      'Perceptive': 'A', 'Investigative': 'A', 'Data-driven': 'A', 'Cautious': 'A', 'Reflective': 'A', 'Prudent': 'A', 'Skeptical': 'A', 'Detail-oriented': 'A', 'Structured': 'A', 'Accurate': 'A',
+      'Informed': 'A', 'Disciplined': 'A', 'Meticulous': 'A', 'Astute': 'A', 'Judicious': 'A', 'Empirical': 'A', 'Probing': 'A', 'Strategic': 'A', 'Decisive': 'A', 'Clear-headed': 'A',
+      'Focused': 'A', 'Critical-thinking': 'A',
       // Structural/Planner (B - Green)
       'Organized': 'B', 'Detailed': 'B', 'Practical': 'B', 'Planner': 'B', 'Stable': 'B', 'Disciplined': 'B', 'Structured': 'B', 'Systematic': 'B',
       'Orderly': 'B', 'Efficient': 'B', 'Reliable': 'B', 'Consistent': 'B', 'Procedural': 'B', 'Scheduled': 'B', 'Punctual': 'B', 'Prepared': 'B', 'Responsible': 'B', 'Dependable': 'B',
       'Thorough': 'B', 'Sequential': 'B', 'Coordinated': 'B', 'Pragmatic': 'B', 'Task-oriented': 'B', 'Controlled': 'B', 'Regimented': 'B', 'Predictable': 'B', 'Deliberate': 'B', 'Detail-focused': 'B',
-
       // Relational (C - Red)
       'Empathetic': 'C', 'Compassionate': 'C', 'Supportive': 'C', 'Collaborative': 'C', 'Expressive': 'C', 'Listener': 'C', 'Mediator': 'C', 'Nurturing': 'C', 'Harmonious': 'C', 'Caring': 'C',
       'Warm': 'C', 'Sensitive': 'C', 'Intuitive': 'C', 'Sociable': 'C', 'Friendly': 'C', 'Team-oriented': 'C', 'Empathic': 'C', 'Cooperative': 'C', 'Considerate': 'C', 'Encouraging': 'C',
       'Inclusive': 'C', 'Sympathetic': 'C', 'Affectionate': 'C', 'Understanding': 'C', 'Approachable': 'C', 'Kind': 'C', 'Relational': 'C', 'Emotional': 'C', 'Engaging': 'C', 'Personable': 'C',
       'Thoughtful': 'C', 'Warm-hearted': 'C',
-
       // Experimental (D - Yellow)
       'Creative': 'D', 'Imaginative': 'D', 'Visionary': 'D', 'Innovative': 'D', 'Risk-taking': 'D', 'Adventurous': 'D', 'Explorer': 'D', 'Inspirational': 'D', 'Inventive': 'D', 'Dynamic': 'D',
       'Original': 'D', 'Curious': 'D', 'Spontaneous': 'D', 'Flexible': 'D', 'Bold': 'D', 'Experimental': 'D', 'Daring': 'D', 'Unconventional': 'D', 'Open-minded': 'D',
@@ -408,7 +403,6 @@
       'Clear-headed': '<strong>Would you stay calm and focused during a crisis?</strong>',
       'Focused': '<strong>Would you concentrate deeply on solving a single problem?</strong>',
       'Critical-thinking': '<strong>Would you analyze a situation from multiple angles before deciding?</strong>',
-
       // Structural/Planner (B - Green)
       'Organized': '<strong>Would you create a detailed plan before starting a big project?</strong>',
       'Detailed': '<strong>Would you include every step in a schedule for an event?</strong>',
@@ -438,7 +432,6 @@
       'Predictable': '<strong>Would you prefer a work environment with set expectations?</strong>',
       'Deliberate': '<strong>Would you take time to plan each step of a task?</strong>',
       'Detail-focused': '<strong>Would you ensure no minor detail is overlooked in planning?</strong>',
-
       // Relational (C - Red)
       'Empathetic': '<strong>Would you feel others’ emotions and offer support during a tough time?</strong>',
       'Compassionate': '<strong>Would you help a struggling colleague with kindness?</strong>',
@@ -464,7 +457,7 @@
       'Sympathetic': '<strong>Would you feel sorry for someone’s misfortune and help?</strong>',
       'Affectionate': '<strong>Would you show love or care through a hug or kind words?</strong>',
       'Understanding': '<strong>Would you accept someone’s mistakes with patience?</strong>',
-      'Approachable': '<strong>Would you others feel comfortable asking you for advice?</strong>',
+      'Approachable': '<strong>Would others feel comfortable asking you for advice?</strong>',
       'Kind': '<strong>Would you offer help to a stranger in need?</strong>',
       'Relational': '<strong>Would you build strong connections with your colleagues?</strong>',
       'Emotional': '<strong>Would you express your feelings openly in a close relationship?</strong>',
@@ -472,7 +465,6 @@
       'Personable': '<strong>Would you easily connect with people on a personal level?</strong>',
       'Thoughtful': '<strong>Would you remember a friend’s birthday with a gift?</strong>',
       'Warm-hearted': '<strong>Would you show genuine care in every interaction?</strong>',
-
       // Experimental (D - Yellow)
       'Creative': '<strong>Would you design a unique solution for a common problem?</strong>',
       'Imaginative': '<strong>Would you come up with a new story idea for a book?</strong>',
@@ -511,10 +503,10 @@
 
     function startGame() {
       userInfo = {
-        name: document.getElementById('name').value || 'Thinker',
+        fullName: document.getElementById('name').value || 'Thinker',
         designation: document.getElementById('designation').value || 'Explorer',
-        team: document.getElementById('team').value || 'Dream Team',
-        city: document.getElementById('city').value || 'Mind City'
+        teamDepartment: document.getElementById('team').value || 'Dream Team',
+        baseCity: document.getElementById('city').value || 'Mind City'
       };
       if (availableWords.length < 25) {
         console.error("Not enough unique words available. Required: 25, Available:", availableWords.length);
@@ -670,9 +662,9 @@
          <div style="color: #FF3300;">Relational (C - Red): ${percentages.C}%</div>
          <div style="color: #FFD700;">Experimental (D - Yellow): ${percentages.D}%</div>`;
 
-      document.getElementById('userInfo').innerText = `${userInfo.name}, ${userInfo.designation}, STAR - Shaigan Training and Reinforcement, ${userInfo.team}, ${userInfo.city}`;
+      document.getElementById('userInfo').innerText = `${userInfo.fullName}, ${userInfo.designation}, STAR - Shaigan Training and Reinforcement, ${userInfo.teamDepartment}, ${userInfo.baseCity}`;
 
-      document.getElementById('userName').innerText = userInfo.name;
+      document.getElementById('userName').innerText = userInfo.fullName;
 
       const actionWords = {
         A: 'Analytical (A - Blue)',
@@ -720,7 +712,7 @@
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`${userInfo.name}_HBDI_Scorecard.pdf`);
+        pdf.save(`${userInfo.fullName}_HBDI_Scorecard.pdf`);
       });
     }
 
@@ -728,22 +720,22 @@
       const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbxGiYWePef5Z0wjxMvRGwAXvj67mmkBdNuqgE_AtfbFtMA-tflo7rIcecuSoagSXSCPeA/exec";
       const timestamp = new Date().toISOString();
 
-      // Prepare FormData
+      // Prepare FormData with STAR-Shaigan field names
       const formData = new FormData();
-      formData.append('Name', userInfo.name || '');
+      formData.append('Full Name', userInfo.fullName || '');
       formData.append('Designation', userInfo.designation || '');
-      formData.append('Team', userInfo.team || '');
-      formData.append('City', userInfo.city || '');
-      formData.append('SelectedWords', JSON.stringify(selectedWords || []));
-      formData.append('QuadrantA', quadrantScores.A || 0);
-      formData.append('QuadrantB', quadrantScores.B || 0);
-      formData.append('QuadrantC', quadrantScores.C || 0);
-      formData.append('QuadrantD', quadrantScores.D || 0);
-      formData.append('PercentageA', percentages.A || 0);
-      formData.append('PercentageB', percentages.B || 0);
-      formData.append('PercentageC', percentages.C || 0);
-      formData.append('PercentageD', percentages.D || 0);
-      formData.append('DominantStyles', JSON.stringify(dominantStyles || []));
+      formData.append('Team/Department', userInfo.teamDepartment || '');
+      formData.append('Base City', userInfo.baseCity || '');
+      formData.append('Selected Words', JSON.stringify(selectedWords || []));
+      formData.append('Quadrant A', quadrantScores.A || 0);
+      formData.append('Quadrant B', quadrantScores.B || 0);
+      formData.append('Quadrant C', quadrantScores.C || 0);
+      formData.append('Quadrant D', quadrantScores.D || 0);
+      formData.append('Percentage A', percentages.A || 0);
+      formData.append('Percentage B', percentages.B || 0);
+      formData.append('Percentage C', percentages.C || 0);
+      formData.append('Percentage D', percentages.D || 0);
+      formData.append('Dominant Styles', JSON.stringify(dominantStyles || []));
       formData.append('Timestamp', timestamp);
 
       console.log('Sending data to Google Sheets:', Object.fromEntries(formData));
@@ -761,7 +753,7 @@
           console.log('Data submitted successfully:', data);
           alert('Your HBDI results have been successfully saved to Google Sheets!');
         } else {
-          console.error('Error submitting data:', data.error);
+          console.error('Error submitting data:', data.error || 'Unknown error');
           alert(`Error saving data to Google Sheets: ${data.error || 'Unknown error'}. Your results are still available, and you can download your scorecard.`);
         }
       } catch (error) {
@@ -772,4 +764,3 @@
   </script>
 </body>
 </html>
-
