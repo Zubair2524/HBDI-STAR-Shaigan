@@ -648,9 +648,10 @@ zab      height: auto;
         pdf.save(`${userInfo.name}_HBDI_Scorecard.pdf`);
       });
     }
+
     // Function to send data to Google Sheets
     async function sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
-      const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbwvoSa7b8mVu_kAOM3o-6Frpx-ygS3NmG-G0GRkff7bEz9eXLcdWS9gbAlwgrgjgh8sSQ/exec";
+      const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbyLehs5Y2VnjJ3lyJhrkBcyCL_Hbo1GeFePEQ8ufYK9AHWeOhLep1VGJZ8HP4oXe2yNmw/exec";
       const timestamp = new Date().toISOString();
       const data = {
         userInfo: {
