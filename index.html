@@ -61,7 +61,11 @@
       color: white;
       cursor: pointer;
     }
-    button:hover {
+    button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
       transform: scale(1.05);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
@@ -265,8 +269,8 @@
       <p class="description">Select words that reflect your personality and thinking style. You'll need to choose exactly 25 words.</p>
       <div class="word-box" id="wordBox"></div>
       <div id="scenarioQuestion" class="scenario-question"></div>
-      <button onclick="selectWord(true)">Yes, That's Me!</button>
-      <button onclick="selectWord(false)">Not Quite</button>
+      <button id="yesButton" onclick="selectWord(true)">Yes, That's Me!</button>
+      <button id="noButton" onclick="selectWord(false)">Not Quite</button>
       <div class="progress-bar">
         <div class="progress-fill" id="progressFill"></div>
       </div>
@@ -312,33 +316,28 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const words = [
-      // Analytical (A - Blue) - 50 words
+      // Analytical (A - Blue)
       'Analytical', 'Logical', 'Critical', 'Objective', 'Scientific', 'Rational', 'Insightful', 'Precise', 'Evaluative', 'Factual',
       'Quantitative', 'Methodical', 'Discerning', 'Systematic', 'Reasoned', 'Diagnostic', 'Inquisitive', 'Calculating', 'Intellectual', 'Observant',
       'Perceptive', 'Investigative', 'Data-driven', 'Cautious', 'Reflective', 'Prudent', 'Skeptical', 'Detail-oriented', 'Structured', 'Accurate',
-      'Informed', 'Disciplined', 'Meticulous', 'Astute', 'Logical', 'Reasonable', 'Thoughtful', 'Analytical', 'Judicious', 'Empirical',
-      'Probing', 'Strategic', 'Decisive', 'Clear-headed', 'Focused', 'Critical-thinking', 'Objective', 'Analytical', 'Rational', 'Precise',
+      'Informed', 'Disciplined', 'Meticulous', 'Astute', 'Judicious', 'Empirical', 'Probing', 'Strategic', 'Decisive', 'Clear-headed', 'Focused',
+      'Critical-thinking',
 
-      // Structural/Planner (B - Green) - 50 words
+      // Structural/Planner (B - Green)
       'Organized', 'Detailed', 'Practical', 'Planner', 'Strategic', 'Stable', 'Methodical', 'Disciplined', 'Structured', 'Systematic',
       'Orderly', 'Efficient', 'Reliable', 'Consistent', 'Procedural', 'Scheduled', 'Punctual', 'Prepared', 'Responsible', 'Dependable',
-      'Thorough', 'Sequential', 'Logical', 'Coordinated', 'Pragmatic', 'Task-oriented', 'Controlled', 'Regimented', 'Predictable',
-      'Deliberate', 'Cautious', 'Meticulous', 'Structured', 'Organized', 'Detail-focused', 'Systematic', 'Practical', 'Planner', 'Efficient',
-      'Reliable', 'Consistent', 'Methodical', 'Orderly', 'Punctual', 'Prepared', 'Responsible', 'Dependable', 'Thorough', 'Sequential',
+      'Thorough', 'Sequential', 'Coordinated', 'Pragmatic', 'Task-oriented', 'Controlled', 'Regimented', 'Predictable', 'Deliberate', 'Detail-focused',
 
-      // Relational (C - Red) - 50 words
+      // Relational (C - Red)
       'Empathetic', 'Compassionate', 'Supportive', 'Collaborative', 'Expressive', 'Listener', 'Mediator', 'Nurturing', 'Harmonious', 'Caring',
       'Warm', 'Sensitive', 'Intuitive', 'Sociable', 'Friendly', 'Team-oriented', 'Empathic', 'Cooperative', 'Considerate', 'Encouraging',
-      'Inclusive', 'Sympathetic', 'Affectionate', 'Understanding', 'Approachable', 'Supportive', 'Kind', 'Compassionate', 'Relational', 'Emotional',
-      'Engaging', 'Personable', 'Thoughtful', 'Warm-hearted', 'Caring', 'Empathetic', 'Supportive', 'Collaborative', 'Expressive', 'Listener',
-      'Mediator', 'Nurturing', 'Harmonious', 'Friendly', 'Team-oriented', 'Cooperative', 'Considerate', 'Encouraging', 'Inclusive', 'Sympathetic',
+      'Inclusive', 'Sympathetic', 'Affectionate', 'Understanding', 'Approachable', 'Kind', 'Relational', 'Emotional', 'Engaging', 'Personable',
+      'Thoughtful', 'Warm-hearted',
 
-      // Experimental (D - Yellow) - 50 words
+      // Experimental (D - Yellow)
       'Creative', 'Imaginative', 'Visionary', 'Innovative', 'Risk-taking', 'Adventurous', 'Explorer', 'Inspirational', 'Inventive', 'Dynamic',
-      'Original', 'Curious', 'Spontaneous', 'Flexible', 'Bold', 'Experimental', 'Visionary', 'Creative', 'Innovative', 'Imaginative',
-      'Adventurous', 'Daring', 'Unconventional', 'Inquisitive', 'Open-minded', 'Resourceful', 'Exploratory', 'Future-oriented', 'Big-picture', 'Inspiring',
-      'Energetic', 'Playful', 'Improvizational', 'Visionary', 'Creative', 'Innovative', 'Risk-taking', 'Adventurous', 'Explorer', 'Inspirational',
-      'Inventive', 'Dynamic', 'Original', 'Curious', 'Spontaneous', 'Flexible', 'Bold', 'Experimental', 'Open-minded', 'Resourceful'
+      'Original', 'Curious', 'Spontaneous', 'Flexible', 'Bold', 'Experimental', 'Daring', 'Unconventional', 'Inquisitive', 'Open-minded',
+      'Resourceful', 'Exploratory', 'Future-oriented', 'Big-picture', 'Inspiring', 'Energetic', 'Playful', 'Improvizational'
     ];
 
     const wordQuadrants = {
@@ -508,7 +507,9 @@
 
     let userInfo = {};
     let selectedWords = [];
-    let availableWords = [...words]; // Start with full list
+    let availableWords = [...new Set(words)]; // Ensure unique words
+    let currentWord = null;
+    let isProcessing = false;
 
     function startGame() {
       userInfo = {
@@ -531,10 +532,12 @@
     }
 
     function showNextWord() {
+      if (isProcessing) return; // Prevent multiple calls
       if (selectedWords.length < 25 && availableWords.length > 0) {
-        const word = availableWords.pop(); // Remove and get the last word
-        document.getElementById('wordBox').innerText = word;
-        document.getElementById('scenarioQuestion').innerHTML = scenarios[word] || '<strong>No scenario available for this word.</strong>';
+        currentWord = availableWords.pop(); // Remove and get the next word
+        document.getElementById('wordBox').innerText = currentWord;
+        document.getElementById('scenarioQuestion').innerHTML = scenarios[currentWord] || '<strong>No scenario available for this word.</strong>';
+        document.getElementById('wordCount').innerText = selectedWords.length;
         updateProgress();
       } else if (selectedWords.length < 25) {
         alert("Not enough unique words available to select 25. Please restart and try again.");
@@ -550,22 +553,34 @@
     }
 
     function selectWord(selected) {
-      if (selected) {
-        const currentWord = document.getElementById('wordBox').innerText;
-        if (currentWord && wordQuadrants[currentWord]) {
-          selectedWords.push(currentWord); // Add the word they said Yes to
+      if (isProcessing) return; // Prevent multiple clicks
+      isProcessing = true;
+      document.getElementById('yesButton').disabled = true;
+      document.getElementById('noButton').disabled = true;
+
+      if (selected && currentWord && wordQuadrants[currentWord]) {
+        if (!selectedWords.includes(currentWord)) {
+          selectedWords.push(currentWord);
+          console.log(`Selected word: ${currentWord}, Total selected: ${selectedWords.length}`);
         } else {
-          console.warn(`Word "${currentWord}" not found in wordQuadrants, skipping.`);
+          console.warn(`Word "${currentWord}" already selected, skipping.`);
         }
+      } else if (selected && currentWord) {
+        console.warn(`Word "${currentWord}" not found in wordQuadrants, skipping.`);
       }
-      // Word is already removed from availableWords by showNextWord
+
       document.getElementById('wordCount').innerText = selectedWords.length;
 
-      if (selectedWords.length >= 25) {
-        showResults();
-      } else {
-        showNextWord();
-      }
+      setTimeout(() => {
+        if (selectedWords.length >= 25) {
+          showResults();
+        } else {
+          showNextWord();
+        }
+        isProcessing = false;
+        document.getElementById('yesButton').disabled = false;
+        document.getElementById('noButton').disabled = false;
+      }, 300); // Short delay to prevent rapid clicks
     }
 
     function showResults() {
@@ -575,7 +590,7 @@
       const quadrantScores = { A: 0, B: 0, C: 0, D: 0 };
       selectedWords.forEach(word => {
         const quadrant = wordQuadrants[word];
-        if (quadrant) { // Only increment if quadrant is defined
+        if (quadrant) {
           quadrantScores[quadrant] += 4; // Each word contributes 4 marks
         } else {
           console.warn(`No quadrant defined for word: ${word}`);
@@ -591,12 +606,12 @@
         D: Math.round((quadrantScores.D / totalScore) * 100)
       };
 
-      // Ensure percentages sum to 100% (adjust if rounding causes slight deviation)
+      // Ensure percentages sum to 100%
       const sum = percentages.A + percentages.B + percentages.C + percentages.D;
       if (sum !== 100) {
         const diff = 100 - sum;
         const maxKey = Object.keys(percentages).reduce((a, b) => percentages[a] > percentages[b] ? a : b);
-        percentages[maxKey] += diff; // Adjust the highest quadrant to compensate
+        percentages[maxKey] += diff;
       }
 
       document.getElementById('profileScores').innerHTML =
@@ -659,9 +674,8 @@
       });
     }
 
-    // Function to send data to Google Sheets
     async function sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
-      const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbxGiYWePef5Z0wjxMvRGwAXvj67mmkBdNuqgE_AtfbFtMA-tflo7rIcecuSoagSXSCPeA/exec";
+      const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbyLehs5Y2VnjJ3lyJhrkBcyCL_Hbo1GeFePEQ8ufYK9AHWeOhLep1VGJZ8HP4oXe2yNmw/exec";
       const timestamp = new Date().toISOString();
       const data = {
         userInfo: {
@@ -726,4 +740,3 @@
   </script>
 </body>
 </html>
-
