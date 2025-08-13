@@ -625,7 +625,7 @@
       showNextWord();
     }
 
-    function showResults() {
+        function showResults() {
       document.querySelector('.game-screen').style.display = 'none';
       document.querySelector('.result-screen').style.display = 'block';
 
@@ -699,8 +699,8 @@
       }
       document.getElementById('praiseText').innerHTML = praiseText;
 
-      // Send data to Google Sheets
-      sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles);
+      // Submit results to Supabase
+      submitResultsToSupabase(userInfo, quadrantScores, percentages, dominantStyles);
     }
 
     function downloadScorecard() {
@@ -716,51 +716,52 @@
       });
     }
 
-    async function sendToGoogleSheets(userInfo, selectedWords, quadrantScores, percentages, dominantStyles) {
-      const googleSheetsUrl = "https://script.google.com/macros/s/AKfycbxGiYWePef5Z0wjxMvRGwAXvj67mmkBdNuqgE_AtfbFtMA-tflo7rIcecuSoagSXSCPeA/exec";
-      const timestamp = new Date().toISOString();
+    function submitResultsToSupabase(userInfo, quadrantScores, percentages, dominantStyles) {
+      const projectUrl = 'https://nfwuztbyvbasaqbpyojr.supabase.co'; // Replace with your Supabase URL
+      const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5md3V6dGJ5dmJhc2FxYnB5b2pyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwNjQ4NzcsImV4cCI6MjA3MDY0MDg3N30.DhEvb6H9kczxdD1N9_d6DmDkk6_9sUGZfKSFk7hYLdQ'; // Replace with your Supabase anon key
+      const tableName = 'hbdi_results';
 
-      // Prepare FormData with STAR-Shaigan field names
-      const formData = new FormData();
-      formData.append('Full Name', userInfo.fullName || '');
-      formData.append('Designation', userInfo.designation || '');
-      formData.append('Team/Department', userInfo.teamDepartment || '');
-      formData.append('Base City', userInfo.baseCity || '');
-      formData.append('Selected Words', JSON.stringify(selectedWords || []));
-      formData.append('Quadrant A', quadrantScores.A || 0);
-      formData.append('Quadrant B', quadrantScores.B || 0);
-      formData.append('Quadrant C', quadrantScores.C || 0);
-      formData.append('Quadrant D', quadrantScores.D || 0);
-      formData.append('Percentage A', percentages.A || 0);
-      formData.append('Percentage B', percentages.B || 0);
-      formData.append('Percentage C', percentages.C || 0);
-      formData.append('Percentage D', percentages.D || 0);
-      formData.append('Dominant Styles', JSON.stringify(dominantStyles || []));
-      formData.append('Timestamp', timestamp);
+      const recordData = {
+        full_name: userInfo.fullName || '',
+        designation: userInfo.designation || '',
+        team_department: userInfo.teamDepartment || '',
+        base_city: userInfo.baseCity || '',
+        quadrant_a: quadrantScores.A || 0,
+        quadrant_b: quadrantScores.B || 0,
+        quadrant_c: quadrantScores.C || 0,
+        quadrant_d: quadrantScores.D || 0,
+        percentage_a: percentages.A || 0,
+        percentage_b: percentages.B || 0,
+        percentage_c: percentages.C || 0,
+        percentage_d: percentages.D || 0,
+        dominant_styles: JSON.stringify(dominantStyles || [])
+      };
 
-      console.log('Sending data to Google Sheets:', Object.fromEntries(formData));
-
-      try {
-        const response = await fetch(googleSheetsUrl, {
-          method: 'POST',
-          body: formData
-        });
-
-        const data = await response.json();
-        console.log('Google Sheets Response:', data);
-
-        if (data.result === 'success') {
-          console.log('Data submitted successfully:', data);
-          alert('Your HBDI results have been successfully saved to Google Sheets!');
-        } else {
-          console.error('Error submitting data:', data.error || 'Unknown error');
-          alert(`Error saving data to Google Sheets: ${data.error || 'Unknown error'}. Your results are still available, and you can download your scorecard.`);
+      fetch(`${projectUrl}/rest/v1/${tableName}`, {
+        method: 'POST',
+        headers: {
+          'apikey': apiKey,
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(recordData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      } catch (error) {
-        console.error('Error sending to Google Sheets:', error);
-        alert(`Error sending data to Google Sheets: ${error.message}. Your results are still available, and you can download your scorecard.`);
-      }
+        console.log('HBDI results submitted successfully to Supabase');
+        alert('Your HBDI results have been successfully saved!');
+      })
+      .catch(error => {
+        console.error('Error submitting to Supabase:', error);
+        alert(`Error saving data to Supabase: ${error.message}. Your results are still available, and you can download your scorecard.`);
+      });
+
+      console.log('Submitted Data:', recordData);
     }
   </script>
 </body>
 </html>
+
